@@ -45,12 +45,13 @@ public class TestProprietarioAutomobile {
 
 			testLazyInitExc(proprietarioService, automobileService);
 
-			tesCountAllByAnno(proprietarioService, automobileService);
-
+		
 			testCercaTutteAutomobiliConCfIniziaPer(proprietarioService, automobileService);
 			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
 					+ " elementi.");
 
+			tesCountAllByAnno(proprietarioService, automobileService);
+			
 			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
 					+ " elementi.");
 
@@ -180,32 +181,33 @@ public class TestProprietarioAutomobile {
 
 	private static void testCercaTutteAutomobiliConCfIniziaPer(ProprietarioService proprietarioService,
 			AutomobileService automobileService) throws Exception {
-		System.out.println(".......testCercaTutteAutomobiliConCfIniziaPer inizio.............");
+		System.out.println(".......testCercaTutteLeAutoConCF inizio.............");
 
 		// inserisco un paio di abitanti di test
-		// prima mi serve un Proprietario
-		List<Proprietario> listaProprietari = proprietarioService.listAllProprietari();
-		if (listaProprietari.isEmpty()) {
+		// prima mi serve un municipio
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+		if (listaProprietariPresenti.isEmpty())
 			throw new RuntimeException(
-					"testCercaTuttiGliAbitantiConNome fallito: non ci sono Proprietari a cui collegarci ");
-		}
-		Automobile nuovoAutomobile = new Automobile("hyundai", "i30", "sd624dhds", new Date());
-		Automobile nuovoAutomobile2 = new Automobile("vw", "golf", "xb527sh", new Date());
-		// lo lego al primo Proprietario che trovo
-		nuovoAutomobile.setProprietario(listaProprietari.get(0));
-		nuovoAutomobile2.setProprietario(listaProprietari.get(0));
+					"testCercaTutteLeAutoConCF fallito: non ci sono municipi a cui collegarci ");
 
-		// salvo i nuovi Automobile
+		Automobile nuovoAutomobile = new Automobile("FORD", "Bassi", "asf", new Date());
+		Automobile nuovoAutomobile2 = new Automobile("FORD", "Nato", "asgq", new Date());
+		// lo lego al primo municipio che trovo
+		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(0));
+		nuovoAutomobile2.setProprietario(listaProprietariPresenti.get(0));
+
+		// salvo i nuovi abitante
 		automobileService.inserisciNuovo(nuovoAutomobile);
 		automobileService.inserisciNuovo(nuovoAutomobile2);
 
-		if (automobileService.cercaTutteAutomobiliConCfIniziaPer("c").size() == 0)
-			throw new RuntimeException("testCercaTuttiGliAbitantiConNome fallito: numero record inatteso ");
-
+	
+		automobileService.cercaTutteAutomobiliConCfIniziaPer("c");
+	
 		// clean up code
 		automobileService.rimuovi(nuovoAutomobile);
 		automobileService.rimuovi(nuovoAutomobile2);
-		System.out.println(".......testCercaTutteAutomobiliConCfIniziaPer fine: PASSED.............");
+
+		System.out.println(".......testCercaTutteLeAutoConCF fine: PASSED.............");
 	}
 
 	private static void tesCountAllByAnno(ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception {

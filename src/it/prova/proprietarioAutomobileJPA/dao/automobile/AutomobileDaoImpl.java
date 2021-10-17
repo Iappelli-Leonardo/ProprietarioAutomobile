@@ -53,8 +53,8 @@ public class AutomobileDaoImpl implements AutomobileDao {
 
 	@Override
 	public List<Automobile> findAllByCfIniziaPer(String cfInput) throws Exception {
-		TypedQuery<Automobile> query = entityManager.createQuery("from Automobile a where a.proprietario_id.codiceFiscale like ?1", Automobile.class);
+		TypedQuery<Automobile> query = entityManager.createQuery("select a from Automobile a inner join a.proprietario p where a.proprietario.codiceFiscale like ?1", Automobile.class);
 		return query.setParameter(1, cfInput + "%").getResultList();
 	}
-
+	
 }
